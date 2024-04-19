@@ -1,6 +1,6 @@
 # CreativeGalileoTest
 
-## Introdcution
+## Introduction
 It shows the list of customers page wise with the help of Paging3 library.
 Customer list is rendered with the recycler view.
 In which every item represents customer entity displaying Name, Mobile Number and College ID.(cgId)
