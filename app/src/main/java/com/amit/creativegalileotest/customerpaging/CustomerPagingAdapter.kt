@@ -14,6 +14,8 @@ class CustomerPagingAdapter :
     PagingDataAdapter<CustomersItem, CustomerPagingAdapter.CustomerViewHolder>(COMPARATOR) {
     class CustomerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val customerName = itemView.findViewById<TextView>(R.id.textView)!!
+        val tvId = itemView.findViewById<TextView>(R.id.tvId)!!
+        val tvMobile = itemView.findViewById<TextView>(R.id.tvMobile)!!
     }
 
     companion object {
@@ -33,8 +35,11 @@ class CustomerPagingAdapter :
 
     override fun onBindViewHolder(holder: CustomerViewHolder, position: Int) {
         val item = getItem(position)!!
-        if (item != null)
+        if (item != null) {
             holder.customerName.text = item.name
+            holder.tvId.text = item.cgId.toString()
+            holder.tvMobile.text = item.mobile
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomerViewHolder {

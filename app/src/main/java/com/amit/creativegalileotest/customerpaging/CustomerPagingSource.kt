@@ -5,7 +5,13 @@ import androidx.paging.PagingState
 import com.amit.creativegalileotest.models.CustomersItem
 import com.amit.creativegalileotest.retrofit.CustomerAPI
 
-class CustomerPagingSource(val customerAPI: CustomerAPI) : PagingSource<Int, CustomersItem>() {
+class CustomerPagingSource(
+    val name: String,
+    val mobile: String,
+    val id: String,
+    val customerAPI: CustomerAPI
+) :
+    PagingSource<Int, CustomersItem>() {
     override fun getRefreshKey(state: PagingState<Int, CustomersItem>): Int? {
         return state.anchorPosition?.let {
             state.closestPageToPosition(it)!!.prevKey?.plus(1)
@@ -17,9 +23,9 @@ class CustomerPagingSource(val customerAPI: CustomerAPI) : PagingSource<Int, Cus
         return try {
             val pageNo = params.key ?: 1
             val response = customerAPI.getCustomer(
-                "",
-                "",
-                "",
+                id,
+                name,
+                mobile,
                 "true",
                 pageNo.toString(),
                 "50"
@@ -28,8 +34,8 @@ class CustomerPagingSource(val customerAPI: CustomerAPI) : PagingSource<Int, Cus
             val lastPage = response.data?.count!!.toInt() / 50
             LoadResult.Page(
                 response.data.customers,
-                prevKey = if (pageNo == 0) null else pageNo - 1,
-                nextKey = if (pageNo == lastPage) null else pageNo + 1
+                prevKey = if (pageNo == 1) null else pageNo - 1,
+                nextKey = if (response.data.customers.isEmpty()) null else pageNo + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
